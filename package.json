@@ -11,9 +11,11 @@
         "nuxt": "^3.3.1"
     },
     "dependencies": {
+        "@morev/vue-transitions": "^2.3.6",
         "@nuxtjs/tailwindcss": "^6.6.4",
         "@vueuse/core": "^9.13.0",
         "@vueuse/nuxt": "^9.13.0",
+        "dayjs": "^1.11.7",
         "sass": "^1.60.0",
         "sass-loader": "^13.2.1"
     }
