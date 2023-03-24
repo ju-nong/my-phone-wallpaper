@@ -16,6 +16,7 @@
         "@vueuse/core": "^9.13.0",
         "@vueuse/nuxt": "^9.13.0",
         "dayjs": "^1.11.7",
+        "nuxt-icon": "^0.3.3",
         "sass": "^1.60.0",
         "sass-loader": "^13.2.1"
     }

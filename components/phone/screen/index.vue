@@ -1,11 +1,13 @@
 <template>
-    <div class="screen w-full overflow-auto relative">
+    <div class="screen w-full overflow-auto relative flex flex-col">
         <TransitionFade>
             <div
                 v-if="!props.config.power"
-                class="off-screen w-full h-full left-0 top-0 absoulte bg-black z-[100]"
+                class="off-screen w-full h-full left-0 top-0 absolute bg-black z-[100]"
             ></div>
         </TransitionFade>
+        <PhoneScreenHeader />
+        <PhoneScreenTimer />
     </div>
 </template>
 
