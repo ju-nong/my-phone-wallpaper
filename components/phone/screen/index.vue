@@ -7,7 +7,7 @@
             ></div>
         </TransitionFade>
         <PhoneScreenHeader />
-        <PhoneScreenTimer />
+        <PhoneScreenMain />
     </div>
 </template>
 

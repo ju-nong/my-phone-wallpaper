@@ -19,15 +19,16 @@ const time = ref(dayjs());
 const calendar = computed(() => time.value.format("M월 D일 ddd요일"));
 const timer = computed(() => time.value.format("h:mm"));
 
-setInterval(() => {
-    time.value.add(1, "minute");
-    console.log(time.value.get("minute"));
-}, 1000);
+function oneMinuteLater() {
+    time.value = time.value.add(1, "minute");
+}
 
 setTimeout(() => {
+    oneMinuteLater();
+
     setInterval(() => {
-        time.value.add(1, "minute");
-    }, 1000);
+        oneMinuteLater();
+    }, 1000 * 60);
 }, (60 - time.value.get("second")) * 1000);
 </script>
 

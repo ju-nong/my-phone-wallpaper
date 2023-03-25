@@ -4,9 +4,10 @@
     >
         <div class="flex items-center gap-x-1">
             <Icon name="uil:signal" size="0.8rem" />LG U+
-            <Icon name="mdi:wifi" />
+            <Icon name="mdi:wifi" size="0.8rem" />
         </div>
         <div class="flex items-center gap-x-1">
+            <Icon name="ion:headset" size="0.8rem" />
             {{ Math.round(level * 100) }}%
 
             <Icon
