@@ -19,9 +19,22 @@
                     <p>등대</p>
                     <p class="singer">하현상</p>
                 </div>
-                <div class="w-[20%]">이미지</div>
+                <div
+                    class="w-[20%] waveform-container flex justify-center items-center"
+                >
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
-            <div>호호</div>
+            <div class="player-container flex w-full justify-center p-2">
+                <div>2:15</div>
+                <div class="w-[70%] mx-2"><div></div></div>
+                <div>-1:31</div>
+            </div>
             <div class="flex"></div>
         </div>
         <div class="flex items-center gap-x-1">
@@ -47,7 +60,24 @@
     background-color: rgba(0, 0, 0, 0.5);
 
     .singer {
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .waveform-container {
+        column-gap: 1px;
+        & > div {
+            background-color: rgba(255, 255, 255, 0.4);
+            width: 3px;
+            height: 3px;
+            border-radius: 3px;
+
+            transition: all 0.3s;
+        }
+    }
+
+    .player-container {
+        font-size: 0.5rem;
+        color: rgba(255, 255, 255, 0.6);
     }
 }
 
