@@ -1,7 +1,7 @@
 <template>
     <div class="timer-container text-white flex flex-col text-center">
         <div class="calendar pt-4 text-sm">{{ calendar }}</div>
-        <div class="timer text-6xl">
+        <div class="timer text-6xl bold">
             {{ timer }}
         </div>
     </div>

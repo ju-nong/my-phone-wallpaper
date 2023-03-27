@@ -1,6 +1,6 @@
 <template>
     <div
-        class="footer-container flex items-center justify-end flex-col h-full py-1"
+        class="footer-container flex items-center justify-end flex-col h-full py-1 gap-y-14"
     >
         <div
             class="music-container flex flex-col p-2 w-[94%] text-white items-center text-center rounded-2xl"
@@ -30,9 +30,13 @@
                     <div></div>
                 </div>
             </div>
-            <div class="player-container flex w-full justify-center p-2">
+            <div
+                class="player-container flex w-full justify-center p-2 items-center"
+            >
                 <div>2:15</div>
-                <div class="w-[70%] mx-2"><div></div></div>
+                <div class="w-[70%] mx-2 progress h-[6px] overflow-hidden">
+                    <div class="w-[50%] h-full"></div>
+                </div>
                 <div>-1:31</div>
             </div>
             <div class="flex"></div>
@@ -76,8 +80,17 @@
     }
 
     .player-container {
-        font-size: 0.5rem;
+        font-size: 0.25rem;
         color: rgba(255, 255, 255, 0.6);
+
+        .progress {
+            border-radius: 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+
+            & > div {
+                background-color: #999;
+            }
+        }
     }
 }
 

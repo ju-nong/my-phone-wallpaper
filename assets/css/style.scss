@@ -1,7 +1,33 @@
+@font-face {
+    font-family: "SFProB";
+    src: url("~/assets/fonts/SF-Pro-Display-Semibold.otf") format("opentype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "SFProL";
+    src: url("~/assets/fonts/SF-Pro-Display-Light.otf") format("opentype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "SFProT";
+    src: url("~/assets/fonts/SF-Pro-Display-Thin.otf") format("opentype");
+    font-weight: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
     border: 0;
     box-sizing: border-box;
-    font-family: "Apple SD Gothic Neo";
+    font-family: "SFProL";
+}
+
+.bold {
+    font-family: "SFProB";
+}
+
+.thin {
+    font-family: "SFProT";
 }
