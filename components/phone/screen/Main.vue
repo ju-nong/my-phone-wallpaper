@@ -1,10 +1,23 @@
 <template>
-    <div class="h-full flex flex-col justify-between">
+    <div class="h-full flex flex-col justify-between z-[2]">
         <PhoneScreenTimer />
-        <PhoneScreenFooter />
+        <PhoneScreenFooter
+            :active="props.active"
+            :media="props.media"
+            @next="emits('next')"
+            @prev="emits('prev')"
+            @setActive="emits('setActive')"
+        />
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+    active: Boolean,
+    media: Object,
+});
+
+const emits = defineEmits(["setActive", "next", "prev", "setPlay"]);
+</script>
 
 <style></style>

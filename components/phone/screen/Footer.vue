@@ -1,26 +1,46 @@
 <template>
     <div
-        class="footer-container flex items-center justify-end flex-col h-full py-1 gap-y-14"
+        class="footer-container flex items-center justify-between flex-col h-full"
     >
+        <img
+            :src="`/images/${props.media.cover}`"
+            alt=""
+            class="big-cover h-[90px] object-cover cursor-pointer"
+            :class="active ? `active` : ``"
+            @click="emits('setActive')"
+        />
         <div
-            class="music-container flex flex-col p-2 w-[94%] text-white items-center text-center rounded-2xl"
+            class="audio-container flex flex-col px-3 w-[94%] text-white items-center text-center rounded-2xl py-3 mt-1"
         >
-            <div class="text-xs flex w-full p-1">
-                <div class="w-[40px] h-[40px] overflow-hidden rounded">
-                    <img
-                        src="~/assets/images/test.jpeg"
+            <div class="text-xs flex w-full justify-between">
+                <div
+                    class="small-cover w-[40px] overflow-hidden rounded flex justify-center items-center"
+                    :class="active ? `active` : ``"
+                >
+                    <NuxtImg
+                        :src="`/images/${props.media.cover}`"
                         alt=""
-                        class="w-full h-full object-cover"
+                        class="w-full h-[40px] object-cover cursor-pointer"
+                        @click="emits('setActive')"
                     />
                 </div>
                 <div
-                    class="w-[60%] text-left px-3 flex flex-col justify-center"
+                    class="audio-info w-[50%] flex flex-col items-center justify-center"
+                    :class="active ? `active` : ``"
                 >
-                    <p>등대</p>
-                    <p class="singer">하현상</p>
+                    <div class="flex w-full flex-wrap relative">
+                        <span class="relative">{{
+                            props.media.info.title
+                        }}</span>
+                    </div>
+                    <div class="singer flex w-full flex-wrap relative">
+                        <span class="relative">{{
+                            props.media.info.singer
+                        }}</span>
+                    </div>
                 </div>
                 <div
-                    class="w-[20%] waveform-container flex justify-center items-center"
+                    class="w-[40px] waveform-container flex justify-center items-center"
                 >
                     <div></div>
                     <div></div>
@@ -31,17 +51,52 @@
                 </div>
             </div>
             <div
-                class="player-container flex w-full justify-center p-2 items-center"
+                class="player-container flex w-full p-1 items-center gap-x-[0.6rem]"
             >
-                <div>2:15</div>
-                <div class="w-[70%] mx-2 progress h-[6px] overflow-hidden">
-                    <div class="w-[50%] h-full"></div>
+                <div class="w-[24px]">{{ startTime }}</div>
+                <div class="w-[110px] progress h-[6px] overflow-hidden">
+                    <div
+                        class="h-full"
+                        :style="`width:${progressWidth}%`"
+                    ></div>
                 </div>
-                <div>-1:31</div>
+                <div class="w-[24px]">-{{ endTime }}</div>
             </div>
-            <div class="flex"></div>
+            <div
+                class="w-full flex relative justify-center items-center gap-x-1"
+            >
+                <button @click="handleAudioChange('prev')">
+                    <Icon name="fluent:rewind-20-filled" size="1.5rem" />
+                </button>
+                <button
+                    @click="playing = !playing"
+                    class="relative button-container"
+                    :class="playing ? 'play' : 'pause'"
+                >
+                    <Icon name="pajamas:play" size="2.5rem" class="invisible" />
+                    <Icon
+                        name="pajamas:pause"
+                        size="2.5rem"
+                        class="absolute audio-button pause-button"
+                    />
+                    <Icon
+                        name="pajamas:play"
+                        size="2.5rem"
+                        class="absolute audio-button play-button"
+                    />
+                </button>
+                <button @click="handleAudioChange('next')">
+                    <Icon name="fluent:fast-forward-20-filled" size="1.5rem" />
+                </button>
+
+                <Icon
+                    name="mingcute:airpods-fill"
+                    size="1.3rem"
+                    class="airpod"
+                />
+            </div>
         </div>
-        <div class="flex items-center gap-x-1">
+        <div class="flex items-center gap-x-1 mt-8">
             <Icon
                 name="ic:baseline-circle"
                 size="0.6rem"
@@ -53,18 +108,120 @@
                 color="rgba(255, 255, 255, 0.5)"
             />
         </div>
+        <audio class="hidden" ref="audio"></audio>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useMediaControls } from "@vueuse/core";
+import { TransitionScale } from "@morev/vue-transitions";
+import dayjs from "dayjs";
+
+const props = defineProps({
+    active: Boolean,
+    media: Object,
+});
+
+const emits = defineEmits(["setActive", "next", "prev"]);
+
+const audio = ref();
+const { playing, currentTime, duration, volume } = useMediaControls(audio, {
+    src: `/audios/${props.media.audio}`,
+});
+volume.value = 0.1;
+
+const startTime = computed(() =>
+    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
+);
+
+const endTime = computed(() =>
+    dayjs()
+        .startOf("day")
+        .add(Math.round(duration.value - currentTime.value), "second")
+        .format("mm:ss"),
+);
+
+const progressWidth = computed(() =>
+    ((currentTime.value / duration.value) * 100).toFixed(2),
+);
+
+function mediaRest() {
+    const audioConfig = useMediaControls(audio, {
+        src: `/audios/${props.media.audio}`,
+    });
+
+    playing.value = false;
+    currentTime.value = audioConfig.currentTime.value;
+    duration.value = audioConfig.duration.value;
+    volume.value = 1;
+}
+
+async function handleAudioChange(direction) {
+    await emits(direction);
+
+    await mediaRest();
+}
+
+onMounted(() => {
+    volume.value = 0.1;
+});
+</script>
 
 <style lang="scss">
-.music-container {
-    transition: all 0.3s;
+.big-cover {
+    transition: all 0.5s;
+    transform: scale(0);
+    opacity: 0;
+    border-radius: 5px;
+    aspect-ratio: 1/1;
+
+    &.active {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.audio-container {
+    transition: all 0.5s;
     background-color: rgba(0, 0, 0, 0.5);
 
-    .singer {
-        color: rgba(255, 255, 255, 0.6);
+    .small-cover {
+        transition: all 0.5s;
+
+        img {
+            transition: all 0.5s;
+        }
+
+        &.active {
+            opacity: 0;
+
+            img {
+                width: 0px;
+                height: 0px;
+            }
+        }
+    }
+
+    .audio-info {
+        div {
+            span {
+                transition: all 0.5s;
+                left: 0;
+                transform: translateX(0%);
+            }
+
+            &.singer {
+                color: rgba(255, 255, 255, 0.6);
+            }
+        }
+
+        &.active {
+            div {
+                span {
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+        }
     }
 
     .waveform-container {
@@ -91,6 +248,53 @@
                 background-color: #999;
             }
         }
+    }
+
+    .button-container {
+        &.play {
+            .play-button {
+                transition: all 0.2s;
+                transition-delay: 0s;
+
+                transform: translateX(-50%) scale(0);
+                opacity: 0;
+            }
+            .pause-button {
+                transition: all 0.2s;
+                transition-delay: 0.2s;
+
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+        &.pause {
+            .pause-button {
+                transition: all 0.2s;
+                transition-delay: 0s;
+
+                transform: translateX(-50%) scale(0);
+                opacity: 0;
+            }
+            .play-button {
+                transition: all 0.2s;
+                transition-delay: 0.2s;
+
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+        .audio-button {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            opacity: 0;
+        }
+    }
+
+    .airpod {
+        position: absolute;
+        color: rgba(255, 255, 255, 0.5);
+        right: 0.5rem;
     }
 }
 

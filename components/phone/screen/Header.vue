@@ -1,6 +1,6 @@
 <template>
     <div
-        class="header flex justify-between items-center text-white text-xs px-1"
+        class="header flex justify-between items-center text-white text-xs px-1 z-[2]"
     >
         <div class="flex gap-x-1 flex-start thin">
             <Icon name="uil:signal" size="0.8rem" class="signal" />LG U+

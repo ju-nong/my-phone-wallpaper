@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@morev/vue-transitions": "^2.3.6",
+        "@nuxt/image-edge": "^1.0.0-27991759.1a5eea1",
         "@nuxtjs/tailwindcss": "^6.6.4",
         "@vueuse/core": "^9.13.0",
         "@vueuse/nuxt": "^9.13.0",

@@ -4,6 +4,7 @@ export default defineNuxtConfig({
         "@nuxtjs/tailwindcss",
         "@morev/vue-transitions/nuxt",
         "nuxt-icon",
+        "@nuxt/image-edge",
     ],
     css: ["~/assets/css/style.scss"],
     vueTransitions: {},
