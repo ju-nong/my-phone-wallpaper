@@ -23,11 +23,14 @@ const phoneConfig = reactive({
 });
 
 function handleVolumeChange(interval) {
-    const newVolume = volume + interval;
+    const newVolume = phoneConfig.volume + interval;
 
     if (newVolume < 0 || newVolume > 16) {
+        console.log("걸림");
         return;
     }
+
+    console.log(newVolume);
 
     phoneConfig.volume = newVolume;
 }
@@ -43,6 +46,10 @@ function handleTogglePower() {
 function handlePowerOn() {
     phoneConfig.power = true;
 }
+
+watch(phoneConfig, (to, from) => {
+    // console.log(phoneConfig.volume);
+});
 </script>
 
 <style lang="scss">

@@ -24,6 +24,13 @@
     font-family: "SFProL";
 }
 
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .bold {
     font-family: "SFProB";
 }

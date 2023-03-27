@@ -163,7 +163,7 @@ async function handleAudioChange(direction) {
 }
 
 onMounted(() => {
-    volume.value = 0.1;
+    volume.value = 1;
 });
 </script>
 

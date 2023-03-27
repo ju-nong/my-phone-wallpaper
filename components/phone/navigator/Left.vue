@@ -8,17 +8,65 @@
         ></button>
         <button
             class="volume-up-button h-[2.5rem] mt-3 mb-2"
+            ref="$upButton"
+            @click="emits('volumeChange', 1)"
+            @mouseup="pressStop"
+            @touchend="pressStop"
+        ></button>
+        <button
+            class="volume-down-button h-[2.5rem]"
+            ref="$downButton"
+            @click="emits('volumeChange', -1)"
+            @mouseup="pressStop"
+            @touchend="pressStop"
+        ></button>
+        <!-- <button
+            class="volume-up-button h-[2.5rem] mt-3 mb-2"
             @click="emits('volumeChange', 1)"
         ></button>
         <button
             class="volume-down-button h-[2.5rem]"
             @click="emits('volumeChange', -1)"
-        ></button>
+        ></button> -->
     </div>
 </template>
 
 <script setup>
+import { onLongPress } from "@vueuse/core";
+
 const emits = defineEmits(["toggleManner", "volumeChange"]);
+
+const intervalInstance = ref();
+
+// up
+const $upButton = ref();
+
+const volumeUp = () => {
+    intervalInstance.value = setInterval(() => {
+        emits("volumeChange", 1);
+    }, 300);
+};
+
+// down
+const $downButton = ref();
+
+const volumeDown = () => {
+    intervalInstance.value = setInterval(() => {
+        emits("volumeChange", -1);
+    }, 300);
+};
+
+function pressStop() {
+    clearInterval(intervalInstance.value);
+}
+
+onLongPress($upButton, volumeUp, {
+    delay: 500,
+});
+
+onLongPress($downButton, volumeDown, {
+    delay: 500,
+});
 </script>
 
 <style lang="scss">
