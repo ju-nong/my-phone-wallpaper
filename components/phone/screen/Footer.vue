@@ -54,7 +54,14 @@
                 class="player-container flex w-full items-center relative justify-center h-5"
             >
                 <div class="absolute left-1">{{ startTime }}</div>
-                <div class="w-[110px] progress h-[6px] overflow-hidden">
+                <div
+                    class="w-[110px] progress h-[6px] overflow-hidden relative"
+                >
+                    <input
+                        type="range"
+                        class="w-full cursor-pointer absolute left-0 top-0 opacity-0"
+                        v-model="$progress"
+                    />
                     <div
                         class="h-full"
                         :style="`width:${progressWidth}%`"
@@ -133,18 +140,20 @@ const { playing, currentTime, duration, volume } = useMediaControls(audio, {
 });
 
 const startTime = computed(() =>
-    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
+    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss")
 );
 
 const endTime = computed(() =>
     dayjs()
         .startOf("day")
         .add(Math.round(duration.value - currentTime.value), "second")
-        .format("mm:ss"),
+        .format("mm:ss")
 );
 
+const $progress = ref(0);
+
 const progressWidth = computed(() =>
-    ((currentTime.value / duration.value) * 100).toFixed(2),
+    ((currentTime.value / duration.value) * 100).toFixed(2)
 );
 
 function mediaRest() {
@@ -172,6 +181,10 @@ watch(deviceVolume, (to, from) => {
     if (to !== from) {
         volume.value = to;
     }
+});
+
+watch($progress, (to, from) => {
+    currentTime.value = (duration.value / 100) * to;
 });
 </script>
 
@@ -251,7 +264,6 @@ watch(deviceVolume, (to, from) => {
         .progress {
             border-radius: 1rem;
             background-color: rgba(255, 255, 255, 0.2);
-
             & > div {
                 background-color: #999;
             }
