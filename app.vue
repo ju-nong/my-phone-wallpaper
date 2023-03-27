@@ -1,6 +1,6 @@
 <template>
     <div
-        class="phone-container w-[100vw] h-[100vh] overflow-hidden flex items-center justify-center"
+        class="phone-container w-[100vw] h-[100vh] flex items-center justify-center"
     >
         <Phone />
     </div>

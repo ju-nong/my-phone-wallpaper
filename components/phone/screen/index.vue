@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { useToggle, useCycleList } from "@vueuse/core";
+import { useToggle, useCycleList, useWindowSize } from "@vueuse/core";
 import { TransitionFade } from "@morev/vue-transitions";
 
 const props = defineProps({

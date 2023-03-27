@@ -1,5 +1,5 @@
 <template>
-    <div class="phone relative w-full max-w-[250px] px-2">
+    <div class="phone relative w-full px-2">
         <PhoneNavigatorLeft
             :config="phoneConfig"
             @toggleManner="handleToggleManner"
@@ -16,6 +16,10 @@
 </template>
 
 <script setup>
+import { useWindowSize } from "@vueuse/core";
+
+const { width, height } = useWindowSize();
+
 const phoneConfig = reactive({
     power: false,
     volume: 0,
@@ -28,8 +32,6 @@ function handleVolumeChange(interval) {
     if (newVolume <= -0.0625 || newVolume > 1) {
         return;
     }
-
-    console.log(newVolume);
 
     phoneConfig.volume = newVolume;
 }
@@ -52,5 +54,7 @@ function handlePowerOn() {
     aspect-ratio: 1/1.9;
     border-radius: 1.5rem;
     border: 0.25rem solid #e0e0e0;
+
+    max-width: 250px;
 }
 </style>

@@ -51,16 +51,16 @@
                 </div>
             </div>
             <div
-                class="player-container flex w-full p-1 items-center gap-x-[0.6rem]"
+                class="player-container flex w-full items-center relative justify-center h-5"
             >
-                <div>{{ startTime }}</div>
+                <div class="absolute left-1">{{ startTime }}</div>
                 <div class="w-[110px] progress h-[6px] overflow-hidden">
                     <div
                         class="h-full"
                         :style="`width:${progressWidth}%`"
                     ></div>
                 </div>
-                <div>-{{ endTime }}</div>
+                <div class="absolute right-1">-{{ endTime }}</div>
             </div>
             <div
                 class="w-full flex relative justify-center items-center gap-x-1"
@@ -245,8 +245,8 @@ watch(deviceVolume, (to, from) => {
     }
 
     .player-container {
-        font-size: 0.25rem;
         color: rgba(255, 255, 255, 0.6);
+        font-size: 9px;
 
         .progress {
             border-radius: 1rem;

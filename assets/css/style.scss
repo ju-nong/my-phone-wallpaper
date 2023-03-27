@@ -38,3 +38,9 @@ body {
 .thin {
     font-family: "SFProT";
 }
+
+@media screen and (max-width: 350px) {
+    .phone {
+        transform: scale(0.8);
+    }
+}
