@@ -24,6 +24,7 @@
         <PhoneScreenMain
             :active="active"
             :media="state"
+            :volume="props.config.volume"
             @next="next"
             @prev="prev"
             @setActive="setActive"

@@ -4,6 +4,7 @@
         <PhoneScreenFooter
             :active="props.active"
             :media="props.media"
+            :volume="props.volume"
             @next="emits('next')"
             @prev="emits('prev')"
             @setActive="emits('setActive')"
@@ -15,6 +16,7 @@
 const props = defineProps({
     active: Boolean,
     media: Object,
+    volume: Number,
 });
 
 const emits = defineEmits(["setActive", "next", "prev", "setPlay"]);

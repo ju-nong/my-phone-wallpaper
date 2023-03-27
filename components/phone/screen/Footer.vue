@@ -53,14 +53,14 @@
             <div
                 class="player-container flex w-full p-1 items-center gap-x-[0.6rem]"
             >
-                <div class="w-[24px]">{{ startTime }}</div>
+                <div>{{ startTime }}</div>
                 <div class="w-[110px] progress h-[6px] overflow-hidden">
                     <div
                         class="h-full"
                         :style="`width:${progressWidth}%`"
                     ></div>
                 </div>
-                <div class="w-[24px]">-{{ endTime }}</div>
+                <div>-{{ endTime }}</div>
             </div>
             <div
                 class="w-full flex relative justify-center items-center gap-x-1"
@@ -120,15 +120,17 @@ import dayjs from "dayjs";
 const props = defineProps({
     active: Boolean,
     media: Object,
+    volume: Number,
 });
 
 const emits = defineEmits(["setActive", "next", "prev"]);
+
+const deviceVolume = computed(() => props.volume);
 
 const audio = ref();
 const { playing, currentTime, duration, volume } = useMediaControls(audio, {
     src: `/audios/${props.media.audio}`,
 });
-volume.value = 0.1;
 
 const startTime = computed(() =>
     dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
@@ -163,7 +165,13 @@ async function handleAudioChange(direction) {
 }
 
 onMounted(() => {
-    volume.value = 1;
+    volume.value = props.volume;
+});
+
+watch(deviceVolume, (to, from) => {
+    if (to !== from) {
+        volume.value = to;
+    }
 });
 </script>
 

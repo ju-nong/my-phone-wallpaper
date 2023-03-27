@@ -9,25 +9,17 @@
         <button
             class="volume-up-button h-[2.5rem] mt-3 mb-2"
             ref="$upButton"
-            @click="emits('volumeChange', 1)"
+            @click="emits('volumeChange', 0.0625)"
             @mouseup="pressStop"
             @touchend="pressStop"
         ></button>
         <button
             class="volume-down-button h-[2.5rem]"
             ref="$downButton"
-            @click="emits('volumeChange', -1)"
+            @click="emits('volumeChange', -0.0625)"
             @mouseup="pressStop"
             @touchend="pressStop"
         ></button>
-        <!-- <button
-            class="volume-up-button h-[2.5rem] mt-3 mb-2"
-            @click="emits('volumeChange', 1)"
-        ></button>
-        <button
-            class="volume-down-button h-[2.5rem]"
-            @click="emits('volumeChange', -1)"
-        ></button> -->
     </div>
 </template>
 
@@ -43,8 +35,8 @@ const $upButton = ref();
 
 const volumeUp = () => {
     intervalInstance.value = setInterval(() => {
-        emits("volumeChange", 1);
-    }, 300);
+        emits("volumeChange", 0.0625);
+    }, 100);
 };
 
 // down
@@ -52,8 +44,8 @@ const $downButton = ref();
 
 const volumeDown = () => {
     intervalInstance.value = setInterval(() => {
-        emits("volumeChange", -1);
-    }, 300);
+        emits("volumeChange", -0.0625);
+    }, 100);
 };
 
 function pressStop() {
