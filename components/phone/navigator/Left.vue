@@ -4,19 +4,19 @@
     >
         <button
             class="switch h-[1.5rem]"
-            @click="emits('toggleManner')"
+            @click="device.toggleManner()"
         ></button>
         <button
             class="volume-up-button h-[2.5rem] mt-3 mb-2"
             ref="$upButton"
-            @click="emits('volumeChange', 0.0625)"
+            @click="device.volumeUp()"
             @mouseup="pressStop"
             @touchend="pressStop"
         ></button>
         <button
             class="volume-down-button h-[2.5rem]"
             ref="$downButton"
-            @click="emits('volumeChange', -0.0625)"
+            @click="device.volumeUp()"
             @mouseup="pressStop"
             @touchend="pressStop"
         ></button>
@@ -26,25 +26,25 @@
 <script setup>
 import { onLongPress } from "@vueuse/core";
 
-const emits = defineEmits(["toggleManner", "volumeChange"]);
+const device = useDeviceStore();
 
 const intervalInstance = ref();
 
 // up
 const $upButton = ref();
 
-const volumeUp = () => {
+const handleVolumeUp = () => {
     intervalInstance.value = setInterval(() => {
-        emits("volumeChange", 0.0625);
+        device.volumeUp();
     }, 100);
 };
 
 // down
 const $downButton = ref();
 
-const volumeDown = () => {
+const handleVolumeDown = () => {
     intervalInstance.value = setInterval(() => {
-        emits("volumeChange", -0.0625);
+        device.volumeDown();
     }, 100);
 };
 
@@ -52,11 +52,11 @@ function pressStop() {
     clearInterval(intervalInstance.value);
 }
 
-onLongPress($upButton, volumeUp, {
+onLongPress($upButton, handleVolumeUp, {
     delay: 500,
 });
 
-onLongPress($downButton, volumeDown, {
+onLongPress($downButton, handleVolumeDown, {
     delay: 500,
 });
 </script>

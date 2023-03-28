@@ -2,13 +2,13 @@
     <div class="bottom-navigator flex justify-center items-center">
         <button
             class="home-button w-[2.25rem] h-[2.25rem]"
-            @click="emits('powerOn')"
+            @click="device.togglePower(true)"
         ></button>
     </div>
 </template>
 
 <script setup>
-const emits = defineEmits(["powerOn"]);
+const device = useDeviceStore();
 </script>
 
 <style lang="scss">

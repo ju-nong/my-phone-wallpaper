@@ -11,6 +11,7 @@ import "@morev/vue-transitions/styles";
 </script>
 
 <style lang="scss">
-.phone-container {
-}
+/* .phone-container {
+    
+} */
 </style>

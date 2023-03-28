@@ -4,13 +4,13 @@
     >
         <button
             class="power-button w-full h-[2.5rem]"
-            @click="emits('togglePower')"
+            @click="device.togglePower()"
         ></button>
     </div>
 </template>
 
 <script setup>
-const emits = defineEmits(["togglePower"]);
+const device = useDeviceStore();
 </script>
 
 <style lang="scss">
