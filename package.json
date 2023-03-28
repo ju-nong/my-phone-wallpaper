@@ -14,11 +14,16 @@
         "@morev/vue-transitions": "^2.3.6",
         "@nuxt/image-edge": "^1.0.0-27991759.1a5eea1",
         "@nuxtjs/tailwindcss": "^6.6.4",
+        "@pinia/nuxt": "^0.4.7",
         "@vueuse/core": "^9.13.0",
         "@vueuse/nuxt": "^9.13.0",
         "dayjs": "^1.11.7",
         "nuxt-icon": "^0.3.3",
+        "pinia": "^2.0.33",
         "sass": "^1.60.0",
         "sass-loader": "^13.2.1"
+    },
+    "overrides": {
+        "vue": "latest"
     }
 }

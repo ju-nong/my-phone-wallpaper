@@ -5,6 +5,7 @@ export default defineNuxtConfig({
         "@morev/vue-transitions/nuxt",
         "nuxt-icon",
         "@nuxt/image-edge",
+        "@pinia/nuxt",
     ],
     css: ["~/assets/css/style.scss"],
     vueTransitions: {},
@@ -21,5 +22,8 @@ export default defineNuxtConfig({
                 },
             ],
         },
+    },
+    pinia: {
+        autoImports: [["defineStore", "definePiniaStore"]],
     },
 });

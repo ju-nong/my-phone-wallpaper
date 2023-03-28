@@ -1,42 +1,12 @@
-# Nuxt 3 Minimal Starter
+# Nuxt3 + Vueuse + Pinia
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+어 가보자고
 
-## Setup
+### Nuxt3에서 Pinia 사용할 때 주의할 점
 
-Make sure to install the dependencies:
-
-```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install
+```json
+// package.json에 이거 추가해줘야 vue 종속성 문제 해결됨
+"overrides": {
+  "vue": "latest"
+}
 ```
-
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
