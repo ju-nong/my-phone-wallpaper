@@ -1,5 +1,5 @@
 <template>
-    <div class="screen w-full overflow-auto relative flex flex-col">
+    <div class="screen w-full overflow-hidden relative flex flex-col">
         <TransitionFade>
             <div
                 v-if="!device.power"
@@ -21,6 +21,7 @@
         </TransitionFade>
         <PhoneScreenHeader />
         <PhoneScreenMain />
+        <PhoneScreenBell />
     </div>
 </template>
 

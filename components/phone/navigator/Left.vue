@@ -9,14 +9,14 @@
         <button
             class="volume-up-button h-[2.5rem] mt-3 mb-2"
             ref="$upButton"
-            @click="device.volumeUp()"
+            @click="handleUp"
             @mouseup="pressStop"
             @touchend="pressStop"
         ></button>
         <button
             class="volume-down-button h-[2.5rem]"
             ref="$downButton"
-            @click="device.volumeUp()"
+            @click="handleDown"
             @mouseup="pressStop"
             @touchend="pressStop"
         ></button>
@@ -27,16 +27,33 @@
 import { onLongPress } from "@vueuse/core";
 
 const device = useDeviceStore();
+const volumeMode = computed(() => device.getVolumeMode);
 
 const intervalInstance = ref();
 
 // up
 const $upButton = ref();
 
+function handleUp() {
+    if (volumeMode.value) {
+        device.volumeUp();
+    } else {
+        device.bellUp();
+    }
+}
+
+function handleDown() {
+    if (volumeMode.value) {
+        device.volumeDown();
+    } else {
+        device.bellDown();
+    }
+}
+
 const handleVolumeUp = () => {
     intervalInstance.value = setInterval(() => {
-        device.volumeUp();
-    }, 100);
+        handleUp();
+    }, 50);
 };
 
 // down
@@ -44,8 +61,8 @@ const $downButton = ref();
 
 const handleVolumeDown = () => {
     intervalInstance.value = setInterval(() => {
-        device.volumeDown();
-    }, 100);
+        handleDown();
+    }, 50);
 };
 
 function pressStop() {
@@ -53,11 +70,11 @@ function pressStop() {
 }
 
 onLongPress($upButton, handleVolumeUp, {
-    delay: 500,
+    delay: 300,
 });
 
 onLongPress($downButton, handleVolumeDown, {
-    delay: 500,
+    delay: 300,
 });
 </script>
 

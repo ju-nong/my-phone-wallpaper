@@ -14,11 +14,15 @@ export const useDeviceStore = defineStore({
         power: false,
         manner: false,
         volume: 0,
+        bell: 0,
+        volumeMode: false,
     }),
     getters: {
         getPower: (state) => state.power,
         getManner: (state) => state.manner,
         getVolume: (state) => state.volume,
+        getBell: (state) => state.bell,
+        getVolumeMode: (state) => state.volumeMode,
     },
     actions: {
         togglePower(force = null) {
@@ -40,6 +44,19 @@ export const useDeviceStore = defineStore({
             if (this.volume >= VOLUME_INTERVAL) {
                 this.volume -= VOLUME_INTERVAL;
             }
+        },
+        bellUp() {
+            if (this.bell < 1) {
+                this.bell += VOLUME_INTERVAL;
+            }
+        },
+        bellDown() {
+            if (this.bell >= VOLUME_INTERVAL) {
+                this.bell -= VOLUME_INTERVAL;
+            }
+        },
+        toggleVolumeMode() {
+            this.volumeMode = !this.volumeMode;
         },
     },
 });
