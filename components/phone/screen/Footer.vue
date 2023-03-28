@@ -54,7 +54,14 @@
                 class="player-container flex w-full items-center relative justify-center h-5"
             >
                 <div class="absolute left-1">{{ startTime }}</div>
-                <div class="w-[110px] progress h-[6px] overflow-hidden">
+                <div
+                    class="w-[110px] progress h-[6px] overflow-hidden relative"
+                >
+                    <input
+                        type="range"
+                        class="w-full cursor-pointer absolute left-0 top-0 opacity-0"
+                        v-model="$progress"
+                    />
                     <div
                         class="h-full"
                         :style="`width:${progressWidth}%`"
@@ -128,40 +135,53 @@ const emits = defineEmits(["setActive", "next", "prev"]);
 const deviceVolume = computed(() => props.volume);
 
 const audio = ref();
-const { playing, currentTime, duration, volume } = useMediaControls(audio, {
-    src: `/audios/${props.media.audio}`,
-});
+const { playing, currentTime, duration, volume, ended } = useMediaControls(
+    audio,
+    {
+        src: `/audios/${props.media.audio}`,
+    }
+);
 
 const startTime = computed(() =>
-    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
+    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss")
 );
 
 const endTime = computed(() =>
     dayjs()
         .startOf("day")
-        .add(Math.round(duration.value - currentTime.value), "second")
-        .format("mm:ss"),
+        .add(Math.floor(duration.value - currentTime.value), "second")
+        .format("mm:ss")
 );
+
+const $progress = ref(0);
 
 const progressWidth = computed(() =>
-    ((currentTime.value / duration.value) * 100).toFixed(2),
+    ((currentTime.value / duration.value) * 100).toFixed(2)
 );
 
-function mediaRest() {
+function mediaRest(autoPlay = false) {
     const audioConfig = useMediaControls(audio, {
         src: `/audios/${props.media.audio}`,
     });
 
-    playing.value = false;
     currentTime.value = audioConfig.currentTime.value;
     duration.value = audioConfig.duration.value;
-    volume.value = 1;
+
+    if (autoPlay) {
+        setTimeout(() => {
+            volume.value = 1;
+            playing.value = autoPlay;
+            console.log("왜 안하지");
+        }, 3000);
+    } else {
+        playing.value = false;
+    }
 }
 
-async function handleAudioChange(direction) {
+async function handleAudioChange(direction, autoPlay = false) {
     await emits(direction);
 
-    await mediaRest();
+    await mediaRest(autoPlay);
 }
 
 onMounted(() => {
@@ -173,6 +193,22 @@ watch(deviceVolume, (to, from) => {
         volume.value = to;
     }
 });
+
+watch($progress, (to, from) => {
+    currentTime.value = (duration.value / 100) * to;
+});
+
+watch(ended, (to, from) => {
+    if (to) {
+        handleAudioChange("next");
+    }
+});
+
+// watch(playing, (to, from) => {
+//     if (to && duration.value <= currentTime.value) {
+//         handleAudioChange("next", true);
+//     }
+// });
 </script>
 
 <style lang="scss">
@@ -251,7 +287,6 @@ watch(deviceVolume, (to, from) => {
         .progress {
             border-radius: 1rem;
             background-color: rgba(255, 255, 255, 0.2);
-
             & > div {
                 background-color: #999;
             }
