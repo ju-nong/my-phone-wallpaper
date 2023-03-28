@@ -55,6 +55,6 @@ function handlePowerOn() {
     border-radius: 1.5rem;
     border: 0.25rem solid #e0e0e0;
 
-    max-width: 250px;
+    width: 250px;
 }
 </style>
