@@ -71,19 +71,20 @@ const { bell, volume, manner } = storeToRefs(device);
 const bellWidth = computed(() => (device.getBell * 100).toFixed(2));
 
 const bellChanging = ref(false);
-const hideInterval = ref();
+const hideTimeout = ref();
 const mannerOffset = ref({
     enter: [0, "-100%"],
     leave: [0, "100%"],
 });
 const mannerInit = ref(false);
+const mannerTimeout = ref();
 
 function difference(to, from) {
     if (to !== from) {
-        clearTimeout(hideInterval.value);
+        clearTimeout(hideTimeout.value);
         bellChanging.value = true;
 
-        hideInterval.value = setTimeout(() => {
+        hideTimeout.value = setTimeout(() => {
             bellChanging.value = false;
         }, 1300);
     }
@@ -111,7 +112,9 @@ watch(manner, (to, from) => {
     if (!manner.value) {
         mannerInit.value = true;
 
-        setTimeout(() => {
+        clearInterval(mannerTimeout.value);
+
+        mannerTimeout.value = setTimeout(() => {
             mannerInit.value = false;
         }, 300);
     }

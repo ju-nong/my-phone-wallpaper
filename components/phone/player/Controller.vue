@@ -40,7 +40,7 @@
 
         <Icon name="mingcute:airpods-fill" size="1.3rem" class="airpod" />
     </div>
-    <audio class="hidden" ref="$audio"></audio>
+    <audio class="hidden" id="audio" ref="$audio"></audio>
 </template>
 
 <script setup>
@@ -76,11 +76,30 @@ const endTime = computed(() =>
 const $progress = ref(0);
 
 const progressWidth = computed(() =>
-    ((currentTime.value / duration.value) * 100).toFixed(2),
+    ((currentTime.value / duration.value) * 100).toFixed(4),
 );
+
+const test = ref();
 
 onMounted(() => {
     volume.value = device.getVolume;
+
+    const audioCtx = new AudioContext();
+
+    const analyser = audioCtx.createAnalyser();
+
+    const source = audioCtx.createMediaElementSource(
+        document.querySelector("#audio"),
+    );
+
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+
+    test.value = analyser;
+});
+
+watch(test, (to, from) => {
+    console.log(test.value.frequencyBinCount);
 });
 
 watch(device, (to, from) => {
