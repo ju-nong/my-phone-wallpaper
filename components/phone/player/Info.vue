@@ -4,7 +4,13 @@
             class="small-cover w-[40px] overflow-hidden rounded flex justify-center items-center"
             :class="audio.isFullScreen ? `active` : ``"
         >
-            <NuxtImg
+            <!-- <NuxtImg
+                :src="`/images/${audio.getAudio.cover}`"
+                alt=""
+                class="w-full h-[40px] object-cover cursor-pointer"
+                @click="audio.toggleFullScreen()"
+            /> -->
+            <img
                 :src="`/images/${audio.getAudio.cover}`"
                 alt=""
                 class="w-full h-[40px] object-cover cursor-pointer"

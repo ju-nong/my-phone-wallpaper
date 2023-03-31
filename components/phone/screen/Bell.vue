@@ -1,39 +1,123 @@
 <template>
-    <div
-        class="maner-container absolute w-[60%] top-[0.4rem] left-[50%] flex z-[50] p-1"
+    <TransitionSlide
+        no-opacity
+        duration="500"
+        :offset="{
+            enter: [0, '-120%'],
+            leave: [0, '-120%'],
+        }"
     >
-        <div class="icon-container absolute">
-            <!-- <Icon name="ion:md-notifications-off" class="off" size="1.1rem" /> -->
-            <Icon name="ion:md-notifications" class="on" size="1.1rem" />
-        </div>
         <div
-            class="status-container text-white text-[0.6rem] w-full items-center"
+            v-if="bellChanging"
+            class="maner-container absolute w-[60%] top-[0.4rem] left-[50%] flex z-[50] p-1 overflow-hidden"
         >
-            <!-- <div class="off">
-                <p>무음모드</p>
-                <p>켬</p>
-            </div> -->
-            <div class="on flex flex-col justify-center items-center">
-                <p>벨소리 크기</p>
-                <div
-                    class="volume-container w-[70px] h-[15px] flex items-center"
-                >
-                    <div class="background w-full h-[4px] overflow-hidden">
-                        <div
-                            class="h-full"
-                            :style="`width:${bellWidth}%`"
-                        ></div>
+            <div class="icon-container absolute">
+                <Icon
+                    v-if="device.getManner"
+                    name="ion:md-notifications-off"
+                    class="off bell-icon"
+                    size="1.1rem"
+                />
+                <Icon
+                    v-else
+                    name="ion:md-notifications"
+                    class="on bell-icon"
+                    :class="mannerInit ? `shake` : ``"
+                    size="1.1rem"
+                />
+            </div>
+            <div
+                class="status-container text-white text-[0.6rem] w-full items-center"
+            >
+                <TransitionSlide group :offset="mannerOffset">
+                    <div
+                        v-if="device.getManner"
+                        class="off flex flex-col justify-center items-center"
+                    >
+                        <p>무음모드</p>
+                        <p>켬</p>
                     </div>
-                </div>
+                    <div
+                        v-else
+                        class="on flex flex-col justify-center items-center"
+                    >
+                        <p>벨소리 크기</p>
+                        <div
+                            class="volume-container w-[70px] h-[15px] flex items-center"
+                        >
+                            <div
+                                class="background w-full h-[4px] overflow-hidden"
+                            >
+                                <div
+                                    class="h-full"
+                                    :style="`width:${bellWidth}%`"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                </TransitionSlide>
             </div>
         </div>
-    </div>
+    </TransitionSlide>
 </template>
 
 <script setup>
+import { TransitionSlide } from "@morev/vue-transitions";
+import { storeToRefs } from "pinia";
+
 const device = useDeviceStore();
+const { bell, volume, manner } = storeToRefs(device);
 
 const bellWidth = computed(() => (device.getBell * 100).toFixed(2));
+
+const bellChanging = ref(false);
+const hideInterval = ref();
+const mannerOffset = ref({
+    enter: [0, "-100%"],
+    leave: [0, "100%"],
+});
+const mannerInit = ref(false);
+
+function difference(to, from) {
+    if (to !== from) {
+        clearTimeout(hideInterval.value);
+        bellChanging.value = true;
+
+        hideInterval.value = setTimeout(() => {
+            bellChanging.value = false;
+        }, 1300);
+    }
+}
+
+watch(bell, (to, from) => {
+    difference(bell.value);
+});
+
+watch(volume, (to, from) => {
+    difference(volume.value);
+});
+
+watch(manner, (to, from) => {
+    mannerOffset.value = manner.value
+        ? {
+              enter: [0, "-100%"],
+              leave: [0, "100%"],
+          }
+        : {
+              enter: [0, "100%"],
+              leave: [0, "-100%"],
+          };
+
+    if (!manner.value) {
+        mannerInit.value = true;
+
+        setTimeout(() => {
+            mannerInit.value = false;
+        }, 300);
+    }
+
+    difference(manner.value);
+});
 </script>
 
 <style lang="scss">
@@ -44,13 +128,15 @@ const bellWidth = computed(() => (device.getBell * 100).toFixed(2));
 
     .icon-container {
         transform: translate(5px, 1.5px);
-        .on,
-        .off {
-            transition: all 0.3s;
-        }
 
         .on {
             color: rgba(161, 157, 155, 1);
+
+            &.shake {
+                animation-name: shake;
+                animation-duration: 0.3s;
+                animation-timing-function: ease-in-out;
+            }
         }
 
         .off {
@@ -59,7 +145,7 @@ const bellWidth = computed(() => (device.getBell * 100).toFixed(2));
     }
 
     .status-container {
-        > div {
+        div {
             text-align: center;
             transition: all 0.3s;
             > p:nth-child(1) {

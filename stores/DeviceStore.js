@@ -36,22 +36,22 @@ export const useDeviceStore = defineStore({
             this.manner = !this.manner;
         },
         volumeUp() {
-            if (this.volume < 1) {
+            if (this.volume < 1 && !this.manner) {
                 this.volume += VOLUME_INTERVAL;
             }
         },
         volumeDown() {
-            if (this.volume >= VOLUME_INTERVAL) {
+            if (this.volume >= VOLUME_INTERVAL && !this.manner) {
                 this.volume -= VOLUME_INTERVAL;
             }
         },
         bellUp() {
-            if (this.bell < 1) {
+            if (this.bell < 1 && !this.manner) {
                 this.bell += VOLUME_INTERVAL;
             }
         },
         bellDown() {
-            if (this.bell >= VOLUME_INTERVAL) {
+            if (this.bell >= VOLUME_INTERVAL && !this.manner) {
                 this.bell -= VOLUME_INTERVAL;
             }
         },
