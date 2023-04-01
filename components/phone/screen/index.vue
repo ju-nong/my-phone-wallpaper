@@ -22,6 +22,7 @@
         <PhoneScreenHeader />
         <PhoneScreenMain />
         <PhoneScreenBell />
+        <PhoneScreenVolume />
     </div>
 </template>
 

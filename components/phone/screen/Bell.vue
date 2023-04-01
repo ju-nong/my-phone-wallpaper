@@ -94,9 +94,9 @@ watch(bell, (to, from) => {
     difference(bell.value);
 });
 
-watch(volume, (to, from) => {
-    difference(volume.value);
-});
+// watch(volume, (to, from) => {
+//     difference(volume.value);
+// });
 
 watch(manner, (to, from) => {
     mannerOffset.value = manner.value

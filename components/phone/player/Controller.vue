@@ -57,49 +57,30 @@ const { playing, currentTime, duration, volume, ended } = useMediaControls(
     $audio,
     {
         src: `/audios/${audio.getAudio.audio}`,
-    },
+    }
 );
 
 // 오디오 시작, 끝 시간
 const startTime = computed(() =>
-    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
+    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss")
 );
 
 const endTime = computed(() =>
     dayjs()
         .startOf("day")
         .add(Math.floor(duration.value - currentTime.value), "second")
-        .format("mm:ss"),
+        .format("mm:ss")
 );
 
 // progressBar
 const $progress = ref(0);
 
 const progressWidth = computed(() =>
-    ((currentTime.value / duration.value) * 100).toFixed(4),
+    ((currentTime.value / duration.value) * 100).toFixed(4)
 );
-
-const test = ref();
 
 onMounted(() => {
     volume.value = device.getVolume;
-
-    const audioCtx = new AudioContext();
-
-    const analyser = audioCtx.createAnalyser();
-
-    const source = audioCtx.createMediaElementSource(
-        document.querySelector("#audio"),
-    );
-
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-
-    test.value = analyser;
-});
-
-watch(test, (to, from) => {
-    console.log(test.value.frequencyBinCount);
 });
 
 watch(device, (to, from) => {
@@ -128,6 +109,10 @@ watch(ended, (to, from) => {
     if (to) {
         audio.next();
     }
+});
+
+watch(playing, (to, from) => {
+    device.toggleVolumeMode();
 });
 </script>
 

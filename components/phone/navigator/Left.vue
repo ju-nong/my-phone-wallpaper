@@ -51,6 +51,7 @@ function handleDown() {
 }
 
 const handleVolumeUp = () => {
+    pressStop();
     intervalInstance.value = setInterval(() => {
         handleUp();
     }, 50);
@@ -60,6 +61,7 @@ const handleVolumeUp = () => {
 const $downButton = ref();
 
 const handleVolumeDown = () => {
+    pressStop();
     intervalInstance.value = setInterval(() => {
         handleDown();
     }, 50);
@@ -71,10 +73,16 @@ function pressStop() {
 
 onLongPress($upButton, handleVolumeUp, {
     delay: 300,
+    modifiers: {
+        prevent: true,
+    },
 });
 
 onLongPress($downButton, handleVolumeDown, {
     delay: 300,
+    modifiers: {
+        prevent: true,
+    },
 });
 </script>
 
