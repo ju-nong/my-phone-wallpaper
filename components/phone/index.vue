@@ -1,5 +1,5 @@
 <template>
-    <div class="phone relative w-full px-2">
+    <div class="phone relative w-full px-2 bg-white">
         <PhoneNavigatorLeft />
         <PhoneNavigatorRight />
         <PhoneNavigatorTop />

@@ -21,6 +21,12 @@ export default defineNuxtConfig({
                     href: "//db.onlinewebfonts.com/c/67680f2eb947c5cbd58b40961b4a61e9?family=Apple+SD+Gothic+Neo",
                 },
             ],
+            meta: [
+                {
+                    "http-equiv": "content-security-policy",
+                    content: "upgrade-insecure-requests",
+                },
+            ],
         },
     },
     pinia: {

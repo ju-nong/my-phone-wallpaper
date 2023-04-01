@@ -1,7 +1,7 @@
 <template>
     <TransitionSlide
         no-opacity
-        duration="500"
+        :duration="500"
         :offset="{
             enter: [0, '-120%'],
             leave: [0, '-120%'],
@@ -29,7 +29,7 @@
             <div
                 class="status-container text-white text-[0.6rem] w-full items-center"
             >
-                <TransitionSlide group :offset="mannerOffset">
+                <TransitionSlide group :offset="mannerOffset" :duration="500">
                     <div
                         v-if="device.getManner"
                         class="off flex flex-col justify-center items-center"

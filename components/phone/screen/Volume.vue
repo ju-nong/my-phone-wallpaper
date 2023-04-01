@@ -1,7 +1,7 @@
 <template>
     <TransitionSlide
         no-opacity
-        duration="300"
+        :duration="300"
         :offset="{
             enter: ['-200%', 0],
             leave: ['-200%', 0],
