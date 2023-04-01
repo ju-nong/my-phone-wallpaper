@@ -9,60 +9,33 @@
         <button
             class="volume-up-button h-[2.5rem] mt-3 mb-2"
             ref="$upButton"
+            @click="handleUp"
+            @mouseup="pressStop"
+            @touchend="pressStop"
         ></button>
         <button
             class="volume-down-button h-[2.5rem]"
             ref="$downButton"
+            @click="handleDown"
+            @mouseup="pressStop"
+            @touchend="pressStop"
         ></button>
     </div>
 </template>
 
 <script setup>
-import { useMousePressed } from "@vueuse/core";
-import { storeToRefs } from "pinia";
+import { onLongPress } from "@vueuse/core";
 
 const device = useDeviceStore();
-const { getVolumeMode } = storeToRefs(device);
+const volumeMode = computed(() => device.getVolumeMode);
 
 const intervalInstance = ref();
 
 // up
 const $upButton = ref();
-const { pressed: upPressed } = useMousePressed({
-    target: $upButton,
-});
-
-const $downButton = ref();
-const { pressed: downPressed } = useMousePressed({ target: $downButton });
-
-watch(upPressed, (to, from) => {
-    if (to) {
-        intervalInstance.value = setInterval(() => {
-            if (!upPressed.value) {
-                return;
-            }
-            handleUp();
-        }, 50);
-    } else {
-        clearInterval(intervalInstance.value);
-    }
-});
-
-watch(downPressed, (to, from) => {
-    if (to) {
-        intervalInstance.value = setInterval(() => {
-            if (!downPressed.value) {
-                return;
-            }
-            handleDown();
-        }, 50);
-    } else {
-        clearInterval(intervalInstance.value);
-    }
-});
 
 function handleUp() {
-    if (getVolumeMode.value) {
+    if (volumeMode.value) {
         device.volumeUp();
     } else {
         device.bellUp();
@@ -70,12 +43,47 @@ function handleUp() {
 }
 
 function handleDown() {
-    if (getVolumeMode.value) {
+    if (volumeMode.value) {
         device.volumeDown();
     } else {
         device.bellDown();
     }
 }
+
+const handleVolumeUp = () => {
+    pressStop();
+    intervalInstance.value = setInterval(() => {
+        handleUp();
+    }, 50);
+};
+
+// down
+const $downButton = ref();
+
+const handleVolumeDown = () => {
+    pressStop();
+    intervalInstance.value = setInterval(() => {
+        handleDown();
+    }, 50);
+};
+
+function pressStop() {
+    clearInterval(intervalInstance.value);
+}
+
+onLongPress($upButton, handleVolumeUp, {
+    delay: 300,
+    modifiers: {
+        prevent: true,
+    },
+});
+
+onLongPress($downButton, handleVolumeDown, {
+    delay: 300,
+    modifiers: {
+        prevent: true,
+    },
+});
 </script>
 
 <style lang="scss">
