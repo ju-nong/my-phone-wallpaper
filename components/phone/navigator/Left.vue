@@ -35,6 +35,22 @@ const { pressed: upPressed } = useMousePressed({
 const $downButton = ref();
 const { pressed: downPressed } = useMousePressed({ target: $downButton });
 
+function handleUp() {
+    if (getVolumeMode.value) {
+        device.volumeUp();
+    } else {
+        device.bellUp();
+    }
+}
+
+function handleDown() {
+    if (getVolumeMode.value) {
+        device.volumeDown();
+    } else {
+        device.bellDown();
+    }
+}
+
 watch(upPressed, (to, from) => {
     if (to) {
         intervalInstance.value = setInterval(() => {
@@ -60,22 +76,6 @@ watch(downPressed, (to, from) => {
         clearInterval(intervalInstance.value);
     }
 });
-
-function handleUp() {
-    if (getVolumeMode.value) {
-        device.volumeUp();
-    } else {
-        device.bellUp();
-    }
-}
-
-function handleDown() {
-    if (getVolumeMode.value) {
-        device.volumeDown();
-    } else {
-        device.bellDown();
-    }
-}
 </script>
 
 <style lang="scss">

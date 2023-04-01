@@ -84,9 +84,7 @@ onMounted(() => {
 });
 
 watch(device, (to, from) => {
-    if (to.getVolume !== from.getVolume) {
-        volume.value = to.getVolume;
-    }
+    volume.value = to.getVolume;
 });
 
 watch($progress, (to, from) => {
