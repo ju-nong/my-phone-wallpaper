@@ -21,9 +21,16 @@
             <TransitionFade :duration="500">
                 <div
                     v-if="audio.isFullScreen"
-                    class="active-screen w-full h-full left-0 top-0 absolute z-[1] bg-center"
-                    :style="`background-image:url('/images/${audio.getAudio.cover}')`"
-                ></div>
+                    class="w-full h-full left-0 top-0 absolute z-[2]"
+                >
+                    <div
+                        class="active-blur w-full h-full left-0 top-0 z-[2]"
+                    ></div>
+                    <div
+                        class="active-background w-full h-full left-0 top-0 absolute z-[1] bg-center"
+                        :style="`background-image:url('/images/${audio.getAudio.cover}')`"
+                    ></div>
+                </div>
             </TransitionFade>
             <PhoneScreenHeader />
             <PhoneScreenMain />
@@ -72,10 +79,15 @@ watch(isSwiping, (to, from) => {
         background-image: url("~/assets/images/wallpaper-image.png");
     }
 
-    .active-screen {
+    .active-blur {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(50vw);
+    }
+
+    .active-background {
         transition: all 0.5s;
         background-size: auto 100%;
-        filter: blur(1rem);
+        filter: blur(2.5rem) contrast(150%);
     }
 }
 </style>

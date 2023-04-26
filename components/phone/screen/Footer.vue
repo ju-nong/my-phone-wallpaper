@@ -4,15 +4,15 @@
     >
         <PhonePlayerCover />
         <PhonePlayer />
-        <div class="flex items-center gap-x-1 mt-8">
+        <div class="flex items-center gap-x-1 mt-8 mb-1">
             <Icon
                 name="ic:baseline-circle"
-                size="0.6rem"
+                size="0.45rem"
                 color="rgba(255, 255, 255, 1)"
             />
             <Icon
                 name="material-symbols:android-camera"
-                size="1rem"
+                size="0.8rem"
                 color="rgba(255, 255, 255, 0.5)"
             />
         </div>
