@@ -46,10 +46,12 @@
 <script setup>
 import { useMediaControls } from "@vueuse/core";
 import dayjs from "dayjs";
+import { storeToRefs } from "pinia";
 
 const device = useDeviceStore();
 
 const audio = useAudioStore();
+const { nowTrack } = storeToRefs(audio);
 const watchTrackNumber = computed(() => audio.getTrackNumber);
 
 const $audio = ref();
@@ -57,26 +59,28 @@ const { playing, currentTime, duration, volume, ended } = useMediaControls(
     $audio,
     {
         src: `/audios/${audio.getAudio.audio}`,
-    }
+    },
 );
+
+const auto = ref(false);
 
 // 오디오 시작, 끝 시간
 const startTime = computed(() =>
-    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss")
+    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
 );
 
 const endTime = computed(() =>
     dayjs()
         .startOf("day")
         .add(Math.floor(duration.value - currentTime.value), "second")
-        .format("mm:ss")
+        .format("mm:ss"),
 );
 
 // progressBar
 const $progress = ref(0);
 
 const progressWidth = computed(() =>
-    ((currentTime.value / duration.value) * 100).toFixed(4)
+    ((currentTime.value / duration.value) * 100).toFixed(4),
 );
 
 onMounted(() => {
@@ -99,7 +103,8 @@ watch(watchTrackNumber, (to, from) => {
 
         currentTime.value = audioConfig.currentTime.value;
         duration.value = audioConfig.duration.value;
-        playing.value = true;
+
+        audioConfig.playing.value = true;
     }
 });
 
