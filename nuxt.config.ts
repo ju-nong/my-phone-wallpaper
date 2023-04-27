@@ -6,6 +6,7 @@ export default defineNuxtConfig({
         "nuxt-icon",
         "@nuxt/image-edge",
         "@pinia/nuxt",
+        "@vueuse/nuxt",
     ],
     css: ["~/assets/css/style.scss"],
     vueTransitions: {},
