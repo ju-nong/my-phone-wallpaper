@@ -10,6 +10,7 @@
 </template>
 
 <script setup>
+import { useDeviceStore } from "~/stores/DeviceStore";
 const device = useDeviceStore();
 </script>
 

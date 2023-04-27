@@ -47,6 +47,7 @@
 import { useMediaControls } from "@vueuse/core";
 import dayjs from "dayjs";
 import { storeToRefs } from "pinia";
+import { useDeviceStore } from "~/stores/DeviceStore";
 
 const device = useDeviceStore();
 

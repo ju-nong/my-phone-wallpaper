@@ -16,6 +16,7 @@ export const useDeviceStore = defineStore({
         volume: 0,
         bell: 0,
         volumeMode: false,
+        isMain: true,
     }),
     getters: {
         getPower: (state) => state.power,
@@ -23,6 +24,7 @@ export const useDeviceStore = defineStore({
         getVolume: (state) => state.volume,
         getBell: (state) => state.bell,
         getVolumeMode: (state) => state.volumeMode,
+        getIsMain: (state) => state.isMain,
     },
     actions: {
         togglePower(force = null) {
@@ -57,6 +59,9 @@ export const useDeviceStore = defineStore({
         },
         toggleVolumeMode() {
             this.volumeMode = !this.volumeMode;
+        },
+        setMain(flag) {
+            this.isMain = flag;
         },
     },
 });

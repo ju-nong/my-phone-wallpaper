@@ -6,46 +6,53 @@
                 class="off-screen w-full h-full left-0 top-0 absolute bg-black z-[100]"
             ></div>
         </TransitionFade>
-        <div
-            v-if="isMain"
-            class="w-full h-full relative flex flex-col"
-            :style="`transform: translateX(-${screenLeft}px);`"
-            ref="$screen"
+        <TransitionSlide
+            :offset="{
+                enter: ['-100%', 0],
+                leave: [0, 0],
+            }"
         >
-            <TransitionFade :duration="500">
-                <div
-                    v-if="!audio.isFullScreen"
-                    class="default-screen w-full h-full left-0 top-0 absolute z-[0] bg-center bg-repeat bg-cover"
-                ></div>
-            </TransitionFade>
-            <TransitionFade :duration="500">
-                <div
-                    v-if="audio.isFullScreen"
-                    class="w-full h-full left-0 top-0 absolute z-[2]"
-                >
+            <div
+                v-if="isMain"
+                class="w-full h-full relative flex flex-col"
+                :style="`transform: translateX(-${screenLeft}px);`"
+                ref="$screen"
+            >
+                <TransitionFade :duration="500">
                     <div
-                        class="active-blur w-full h-full left-0 top-0 z-[2]"
+                        v-if="!audio.isFullScreen"
+                        class="default-screen w-full h-full left-0 top-0 absolute z-[0] bg-center bg-repeat bg-cover"
                     ></div>
+                </TransitionFade>
+                <TransitionFade :duration="500">
                     <div
-                        class="active-background w-full h-full left-0 top-0 absolute z-[1] bg-center"
-                        :style="`background-image:url('/images/${audio.getAudio.cover}')`"
-                    ></div>
-                </div>
-            </TransitionFade>
-            <PhoneScreenHeader />
-            <PhoneScreenMain />
-            <PhoneScreenBell />
-            <PhoneScreenVolume />
-        </div>
-        <div v-else class="w-fll h-full relative flex bg-orange-700 text-white">
-            카메라
-        </div>
+                        v-if="audio.isFullScreen"
+                        class="w-full h-full left-0 top-0 absolute z-[2]"
+                    >
+                        <div
+                            class="active-blur w-full h-full left-0 top-0 z-[2]"
+                        ></div>
+                        <div
+                            class="active-background w-full h-full left-0 top-0 absolute z-[1] bg-center"
+                            :style="`background-image:url('/images/${audio.getAudio.cover}')`"
+                        ></div>
+                    </div>
+                </TransitionFade>
+                <PhoneScreenHeader />
+                <PhoneScreenMain />
+                <PhoneScreenBell />
+                <PhoneScreenVolume />
+            </div>
+        </TransitionSlide>
+        <PhoneScreenCamera v-if="!isMain" />
     </div>
 </template>
 
 <script setup>
 import { TransitionFade, TransitionSlide } from "@morev/vue-transitions";
 import { usePointerSwipe, useUserMedia } from "@vueuse/core";
+import { storeToRefs } from "pinia";
+import { useDeviceStore } from "~/stores/DeviceStore";
 
 const device = useDeviceStore();
 const audio = useAudioStore();
@@ -53,7 +60,8 @@ const audio = useAudioStore();
 const $screen = ref();
 const { isSwiping, direction, distanceX } = usePointerSwipe($screen);
 
-const isMain = ref(true);
+const { isMain } = storeToRefs(device);
+
 const screenLeft = ref();
 
 watch(distanceX, (to, from) => {
@@ -65,7 +73,8 @@ watch(isSwiping, (to, from) => {
         screenLeft.value = 0;
 
         if (direction.value === "LEFT" && distanceX.value >= 50) {
-            isMain.value = !isMain.value;
+            device.setMain(false);
+            // isMain.value = !isMain.value;
         }
     }
 });

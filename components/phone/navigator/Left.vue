@@ -19,6 +19,7 @@
 
 <script setup>
 import { useMousePressed } from "@vueuse/core";
+import { useDeviceStore } from "~/stores/DeviceStore";
 import { storeToRefs } from "pinia";
 
 const device = useDeviceStore();
