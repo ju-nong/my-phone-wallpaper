@@ -29,6 +29,7 @@
             </div>
         </div>
         <div
+            id="waveform"
             class="w-[40px] waveform-container flex justify-center items-center"
         >
             <div></div>
@@ -43,6 +44,67 @@
 
 <script setup>
 const audio = useAudioStore();
+
+// onMounted(() => {
+//     const audio = new Audio("/audios/allthat.mp3");
+//     audio.crossOrigin = "anonymous";
+//     audio.loop = true;
+
+//     const audioContext = new (window.AudioContext ||
+//         window.webkitAudioContext)();
+//     const analyser = audioContext.createAnalyser();
+//     const source = audioContext.createMediaElementSource(audio);
+//     source.connect(analyser);
+//     analyser.connect(audioContext.destination);
+//     analyser.fftSize = 64;
+
+//     const bufferLength = analyser.frequencyBinCount;
+//     const dataArray = new Uint8Array(bufferLength);
+
+//     const container = document.getElementById("waveform");
+//     const numberOfBars = 6;
+
+//     // Create div elements for bars
+//     for (let i = 0; i < numberOfBars; i++) {
+//         const bar = document.createElement("div");
+//         bar.className = "bar";
+//         container.appendChild(bar);
+//     }
+
+//     function draw() {
+//         requestAnimationFrame(draw);
+
+//         analyser.getByteFrequencyData(dataArray);
+
+//         for (let i = 0; i < numberOfBars; i++) {
+//             const start = Math.floor((i * bufferLength) / numberOfBars);
+//             const end = Math.floor(((i + 1) * bufferLength) / numberOfBars);
+//             let max = 0;
+
+//             for (let j = start; j < end; j++) {
+//                 if (dataArray[j] > max) {
+//                     max = dataArray[j];
+//                 }
+//             }
+
+//             console.log(dataArray);
+
+//             const barHeight = max * 2;
+//             const minHeight = 5;
+//             const bar = container.children[i];
+//             const borderRadius = barHeight < minHeight ? "50%" : "50% 50% 0 0";
+
+//             bar.style.height =
+//                 barHeight < minHeight ? `${minHeight}px` : `${barHeight}px`;
+//             bar.style.backgroundColor = `hsl(${
+//                 (i / numberOfBars) * 400
+//             }, 100%, 50%)`;
+//             bar.style.borderRadius = borderRadius;
+//         }
+//     }
+
+//     draw();
+// });
 </script>
 
 <style lang="scss">

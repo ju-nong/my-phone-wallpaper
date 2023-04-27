@@ -37,11 +37,13 @@ export const useAudioStore = defineStore({
         ],
         fullScreen: false,
         nowTrack: 0,
+        play: false,
     }),
     getters: {
         getAudio: (state) => state.track[state.nowTrack],
         isFullScreen: (state) => state.fullScreen,
         getTrackNumber: (state) => state.nowTrack,
+        IsPlaying: (state) => state.play,
     },
     actions: {
         next() {
@@ -60,6 +62,9 @@ export const useAudioStore = defineStore({
         },
         toggleFullScreen() {
             this.fullScreen = !this.fullScreen;
+        },
+        setPlay(play) {
+            this.play = play;
         },
     },
 });

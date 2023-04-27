@@ -116,6 +116,8 @@ watch(ended, (to, from) => {
 
 watch(playing, (to, from) => {
     device.toggleVolumeMode();
+
+    audio.setPlay(to);
 });
 </script>
 
