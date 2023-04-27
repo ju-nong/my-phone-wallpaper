@@ -38,7 +38,9 @@
                 />
             </li>
         </ul>
-        <div class="flex-1 bg-slate-400"></div>
+        <div class="flex-1 bg-slate-400">
+            <video src="" class="w-full h-full" ref="$video"></video>
+        </div>
         <div class="navigation-container flex flex-col pt-1 overflow-hidden">
             <ul
                 class="cursor-pointer flex w-[270px] text-[10px] transition-all"
@@ -94,6 +96,23 @@ const util = reactive({
 const navigation = reactive({
     list: ["타임랩스", "슬로 모션", "비디오", "사진", "정방향", "파노라마"],
     active: 3,
+});
+
+const $video = ref();
+const { stream, start } = useUserMedia();
+
+// watchEffect(() => {
+//
+// });
+
+watch(stream, (to, from) => {
+    $video.value.srcObject = to;
+
+    console.log($video.value.srcObject);
+});
+
+onMounted(() => {
+    start();
 });
 </script>
 

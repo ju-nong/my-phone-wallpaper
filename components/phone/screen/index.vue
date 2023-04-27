@@ -50,7 +50,7 @@
 
 <script setup>
 import { TransitionFade, TransitionSlide } from "@morev/vue-transitions";
-import { usePointerSwipe, useUserMedia } from "@vueuse/core";
+import { usePointerSwipe } from "@vueuse/core";
 import { storeToRefs } from "pinia";
 import { useDeviceStore } from "~/stores/DeviceStore";
 
