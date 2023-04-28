@@ -38,8 +38,25 @@
                 />
             </li>
         </ul>
-        <div class="flex-1 bg-slate-400">
-            <video src="" class="w-full h-full" ref="$video"></video>
+        <div class="flex-1 relative">
+            <div class="grid-container grid absolute w-full h-full">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <video
+                src=""
+                ref="$video"
+                muted
+                autoplay
+                class="w-full h-full object-cover"
+            ></video>
         </div>
         <div class="navigation-container flex flex-col pt-1 overflow-hidden">
             <ul
@@ -84,7 +101,7 @@
 </template>
 
 <script setup>
-import { useUserMedia } from "@vueuse/core";
+import { useUserMedia, useDevicesList } from "@vueuse/core";
 
 const util = reactive({
     flash: "off",
@@ -98,21 +115,30 @@ const navigation = reactive({
     active: 3,
 });
 
+const currentCamera = ref();
+const { videoInputs: cameras } = useDevicesList({
+    requestPermissions: true,
+    onUpdated() {
+        if (!cameras.value.find((i) => i.deviceId === currentCamera.value)) {
+            currentCamera.value = cameras.value[0]?.deviceId;
+        }
+    },
+});
+
 const $video = ref();
-const { stream, start } = useUserMedia();
 
-// watchEffect(() => {
-//
-// });
+const { stream, enabled } = useUserMedia({
+    constraints: { video: { deviceId: currentCamera } },
+});
 
-watch(stream, (to, from) => {
-    $video.value.srcObject = to;
-
-    console.log($video.value.srcObject);
+watchEffect(() => {
+    if ($video.value) {
+        $video.value.srcObject = stream.value;
+    }
 });
 
 onMounted(() => {
-    start();
+    enabled.value = true;
 });
 </script>
 
@@ -137,6 +163,27 @@ onMounted(() => {
 
         .in-circle {
             border: 2px solid #000;
+        }
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 0;
+
+        > div {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:not(:first-child):not(:nth-child(3n + 1)) {
+                border-left: 1px solid rgba(255, 255, 255, 0.6);
+            }
+            &:nth-child(n + 4) {
+                border-top: 1px solid rgba(255, 255, 255, 0.6);
+            }
         }
     }
 }
