@@ -38,7 +38,7 @@
                 />
             </li>
         </ul>
-        <div class="flex-1 relative">
+        <div class="flex-1 relative h-[279px]">
             <div class="grid-container grid absolute w-full h-full">
                 <div></div>
                 <div></div>
@@ -55,6 +55,7 @@
                 ref="$video"
                 muted
                 autoplay
+                playsinline
                 class="w-full h-full object-cover"
             ></video>
         </div>
@@ -85,6 +86,7 @@
                 </div>
                 <div
                     class="rounded-full h-full aspect-square bg-white flex items-center justify-center"
+                    @click="handleCapture"
                 >
                     <div class="in-circle rounded-full w-[80%] h-[80%]"></div>
                 </div>
@@ -130,6 +132,12 @@ const $video = ref();
 const { stream, enabled } = useUserMedia({
     constraints: { video: { deviceId: currentCamera } },
 });
+
+function handleCapture() {
+    // const canvas = document.createElement("canvas");
+    // const context = canvas.getContext("2d");
+    // canvas.width = video
+}
 
 watchEffect(() => {
     if ($video.value) {
