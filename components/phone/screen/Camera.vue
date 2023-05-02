@@ -59,7 +59,7 @@
                 class="w-full h-full object-cover"
             ></video>
         </div>
-        <div class="navigation-container flex flex-col pt-1 overflow-hidden">
+        <div class="navigation-container flex flex-col py-1 overflow-hidden">
             <ul
                 class="cursor-pointer flex w-[270px] text-[10px] transition-all"
                 :style="`--index: ${navigation.active}; transform:translateX(${
@@ -76,7 +76,7 @@
                     {{ navigationItem }}
                 </li>
             </ul>
-            <div class="flex items-center justify-between px-3 py-1">
+            <div class="flex items-center justify-between px-3 pt-1">
                 <div class="py-1 h-full cursor-pointer">
                     <img
                         src="/images/gallery.jpg"
