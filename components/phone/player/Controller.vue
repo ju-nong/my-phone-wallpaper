@@ -1,19 +1,19 @@
 <template>
-    <div
-        class="player-container flex w-full items-center relative justify-center h-5"
-    >
-        <div class="absolute left-1">{{ startTime }}</div>
-        <div class="w-[110px] progress h-[6px] overflow-hidden relative">
-            <input
-                type="range"
-                class="w-full cursor-pointer absolute left-0 top-0 opacity-0"
-                v-model="$progress"
-            />
-            <div class="h-full" :style="`width:${progressWidth}%`"></div>
-        </div>
-        <div class="absolute right-1">-{{ endTime }}</div>
+  <div
+    class="player-container flex w-full items-center relative justify-center h-5"
+  >
+    <div class="absolute left-1">{{ startTime }}</div>
+    <div class="w-[110px] progress h-[6px] overflow-hidden relative">
+      <input
+        type="range"
+        class="w-full cursor-pointer absolute left-0 top-0 opacity-0"
+        v-model="$progress"
+      />
+      <div class="h-full" :style="`width:${progressWidth}%`"></div>
     </div>
-    <div class="w-full flex relative justify-center items-center gap-x-1">
+    <div class="absolute right-1">-{{ endTime }}</div>
+  </div>
+  <!-- <div class="w-full flex relative justify-center items-center gap-x-1">
         <button @click="audio.prev()">
             <Icon name="fluent:rewind-20-filled" size="1.5rem" />
         </button>
@@ -40,7 +40,7 @@
 
         <Icon name="mingcute:airpods-fill" size="1.3rem" class="airpod" />
     </div>
-    <audio class="hidden" id="audio" ref="$audio"></audio>
+    <audio class="hidden" id="audio" ref="$audio"></audio> -->
 </template>
 
 <script setup>
@@ -57,82 +57,82 @@ const watchTrackNumber = computed(() => audio.getTrackNumber);
 
 const $audio = ref();
 const { playing, currentTime, duration, volume, ended } = useMediaControls(
-    $audio,
-    {
-        src: `/audios/${audio.getAudio.audio}`,
-    },
+  $audio,
+  {
+    src: `/audios/${audio.getAudio.audio}`,
+  },
 );
 
 const auto = ref(false);
 
 // 오디오 시작, 끝 시간
 const startTime = computed(() =>
-    dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
+  dayjs().startOf("day").add(currentTime.value, "second").format("mm:ss"),
 );
 
 const endTime = computed(() =>
-    dayjs()
-        .startOf("day")
-        .add(Math.floor(duration.value - currentTime.value), "second")
-        .format("mm:ss"),
+  dayjs()
+    .startOf("day")
+    .add(Math.floor(duration.value - currentTime.value), "second")
+    .format("mm:ss"),
 );
 
 // progressBar
 const $progress = ref(0);
 
 const progressWidth = computed(() =>
-    ((currentTime.value / duration.value) * 100).toFixed(4),
+  ((currentTime.value / duration.value) * 100).toFixed(4),
 );
 
 onMounted(() => {
-    volume.value = device.getVolume;
+  volume.value = device.getVolume;
 });
 
 watch(device, (to, from) => {
-    volume.value = to.getVolume;
+  volume.value = to.getVolume;
 });
 
 watch($progress, (to, from) => {
-    currentTime.value = (duration.value / 100) * to;
+  currentTime.value = (duration.value / 100) * to;
 });
 
 watch(watchTrackNumber, (to, from) => {
-    if (to !== from) {
-        const audioConfig = useMediaControls($audio, {
-            src: `/audios/${audio.getAudio.audio}`,
-        });
+  if (to !== from) {
+    const audioConfig = useMediaControls($audio, {
+      src: `/audios/${audio.getAudio.audio}`,
+    });
 
-        currentTime.value = audioConfig.currentTime.value;
-        duration.value = audioConfig.duration.value;
+    currentTime.value = audioConfig.currentTime.value;
+    duration.value = audioConfig.duration.value;
 
-        audioConfig.playing.value = true;
-    }
+    audioConfig.playing.value = true;
+  }
 });
 
 watch(ended, (to, from) => {
-    if (to) {
-        audio.next();
-    }
+  if (to) {
+    audio.next();
+  }
 });
 
 watch(playing, (to, from) => {
-    device.toggleVolumeMode();
+  device.toggleVolumeMode();
 
-    audio.setPlay(to);
+  audio.setPlay(to);
 });
 </script>
 
 <style lang="scss">
 .player-container {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 9px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 9px;
 
-    .progress {
-        border-radius: 1rem;
-        background-color: rgba(255, 255, 255, 0.2);
-        & > div {
-            background-color: #999;
-        }
+  .progress {
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    & > div {
+      background-color: #999;
     }
+  }
 }
 </style>
