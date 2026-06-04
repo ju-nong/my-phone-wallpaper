@@ -62,7 +62,6 @@
 </template>
 
 <script setup>
-import { TransitionSlide } from "@morev/vue-transitions";
 import { storeToRefs } from "pinia";
 
 const device = useDeviceStore();
